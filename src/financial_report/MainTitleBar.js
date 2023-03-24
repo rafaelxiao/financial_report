@@ -1,7 +1,7 @@
 import React from "react";
 
 export default function MainTitleBar() {
-    return <div style={{
+    return (<div style={{
         height: 80,
         display: 'flex',
         justifyContent: 'left',
@@ -13,5 +13,5 @@ export default function MainTitleBar() {
         color: 'white',
     }}>
         利润表可视化工具
-    </div>
+    </div>)
 }
