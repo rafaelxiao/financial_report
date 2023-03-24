@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/financial_report/static/css/main.073c9b0a.css",
+    "main.js": "/financial_report/static/js/main.9bd5781a.js",
+    "index.html": "/financial_report/index.html",
+    "main.073c9b0a.css.map": "/financial_report/static/css/main.073c9b0a.css.map",
+    "main.9bd5781a.js.map": "/financial_report/static/js/main.9bd5781a.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.073c9b0a.css",
+    "static/js/main.9bd5781a.js"
+  ]
+}
