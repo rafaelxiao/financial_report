@@ -1,9 +1,14 @@
 import EchartsReact from "echarts-for-react";
-import React from "react";
+import React, { useEffect } from "react";
+import isGoldFinger from "../utils/GoldFingers";
 
-export default function ChartArea({reportManager, styleManager}) {
+export default function ChartArea({reportManager, styleManager, graphWidth}) {
 
+    useEffect(()=>{
+        styleManager.updateValue('exportRatio', (styleManager.getItem('width').value / graphWidth).toFixed(2));
+    }, [graphWidth, styleManager, styleManager.valueString])
 
+    // styleManager.updateValue('exportRatio', (styleManager.getItem('width').value / graphWidth).toFixed(2));
     function getWaterMark(waterMarkText) {
         const size = styleManager.getItem('waterMarkSize').valueTwoDigits * 10;
         const canvas = document.createElement('canvas');
@@ -23,10 +28,7 @@ export default function ChartArea({reportManager, styleManager}) {
         return canvas;
     }
 
-
-
     var financialReport = {
-
 
         get totalRevenue() {
             return reportManager.sumByType('revenue');
@@ -229,107 +231,123 @@ export default function ChartArea({reportManager, styleManager}) {
         return links;
     }
 
-    var copyMarkFontSize = 12;
+    function getCopyMarkFontSize() {
+        var copyMarkFontSize = 12;
 
-    if(styleManager.getItem('titleFontSize').valueTwoDigits / 5 > copyMarkFontSize) {
-        copyMarkFontSize = styleManager.getItem('titleFontSize').valueTwoDigits / 5;
-    };
+        if(styleManager.getItem('titleFontSize').valueTwoDigits / 5 > copyMarkFontSize) {
+            copyMarkFontSize = styleManager.getItem('titleFontSize').valueTwoDigits / 5;
+        };
 
-    var option = {
-        title: [
-            {
-                text: styleManager.getItem('title').value,
-                textStyle: {
-                    fontSize: styleManager.getItem('titleFontSize').value,
-                },
-                left: 'center',
-                color: '#545454',
-                top: `${styleManager.getItem('titlePaddingTop').value}%`,
-                show: true,
-            },
-            {
-                text: '七海原创',
-                textStyle: {
-                    fontSize: copyMarkFontSize,
-                    fontWeight: 100,
-                },
-                padding: copyMarkFontSize / 2,
-                itemGap: copyMarkFontSize / 2,
-                subtextStyle: {
-                    fontSize: copyMarkFontSize / 2,
-                    fontWeight: 800,
-                    color: '#545454',
-                },
-                textAlign: 'center',
-                subtext: '小红书 | 抖音 | Bilibili',
-                right: '0%',
-                bottom: '1%',
-                show: !(styleManager.getItem('secretToken').value === '32167' || financialReport.totalRevenue === 0) ,
-                borderColor: '#545454',
-                borderRadius: 5,
-                borderWidth: 0.3,
-            }
-        ],
-        
-
-        toolbox: {
-            show: true,
-            left: 'center',
-            top: 'bottom',
-            feature: {
-                saveAsImage: {
-                    pixelRatio: styleManager.getItem('exportRatio').valueTwoDigits,
-                },
-            },
-            itemSize: 30,
-        },
-        backgroundColor: {
-            type: 'pattern',
-            image: getWaterMark(styleManager.getItem('waterMark').value),
-            repeat: 'repeat',
-        },
-        series: {
-            type: 'sankey',
-            layoutIterations: 0,
-            nodeGap: styleManager.getItem('curveness').valueTwoDigits,
-            label: {
-                show: true,
-                textBorderColor: 'transparent',
-                formatter: function({data: {name, value}}) {
-                    name = name.split("#")[0];
-                    return `{name|${name}}\n{value|${value}${' '+styleManager.getItem('unit').value}}`;
-                },
-                rich: {
-                    name: {
-                        fontSize: styleManager.getItem('labelFontSize').value,
-                        fontWeight: 'bold',
-                        color: 'black',
-                    },
-                    value: {
-                        fontSize: styleManager.getItem('valueFontSize').value,
-                        color: 'black',
-                        lineHeight: styleManager.getItem('valueFontSize').value * 1.5,
-                    }
-                }
-            },
-            nodeAlign: 'left',
-            data: getReportSeries(financialReport),
-            links: getReportLinks(financialReport),
-            top: `${styleManager.getItem('graphPaddingV').value}%`,
-            bottom: `${(styleManager.getItem('graphPaddingV').value - styleManager.getItem('titlePaddingTop').value )}%`,
-            right: `${styleManager.getItem('graphPaddingH').value}%`,
-            left: `${styleManager.getItem('graphPaddingH').value}%`,
-            emphasis: {
-                focus: 'adjacency'
-            },
-            lineStyle: {
-                color: 'gradient',
-                curveness: 0.5
-            },
-        },
-
+        return copyMarkFontSize;
     }
+
+    function getOption() {
+        var option = {
+            title: [
+                {
+                    text: styleManager.getItem('title').value,
+                    textStyle: {
+                        fontSize: styleManager.getItem('titleFontSize').value,
+                    },
+                    left: 'center',
+                    color: '#545454',
+                    top: `${styleManager.getItem('titlePaddingTop').value}%`,
+                    show: true,
+                },
+                {
+                    text: '七海原创',
+                    textStyle: {
+                        fontSize: getCopyMarkFontSize(),
+                        fontWeight: 100,
+                    },
+                    padding: getCopyMarkFontSize() / 2,
+                    itemGap: getCopyMarkFontSize() / 2,
+                    subtextStyle: {
+                        fontSize: getCopyMarkFontSize() / 2,
+                        fontWeight: 800,
+                        color: '#545454',
+                    },
+                    textAlign: 'center',
+                    subtext: '小红书 | 抖音 | Bilibili',
+                    right: '0%',
+                    bottom: '1%',
+                    show: !(isGoldFinger(styleManager.getItem('secretToken').value) || financialReport.totalRevenue === 0) ,
+                    borderColor: '#545454',
+                    borderRadius: 5,
+                    borderWidth: 0.3,
+                }
+            ],
+            
+    
+            toolbox: {
+                show: true,
+                left: 'center',
+                top: 'bottom',
+                feature: {
+                    saveAsImage: {
+                        pixelRatio: styleManager.getItem('exportRatio').valueTwoDigits,
+                    },
+                },
+                itemSize: 30,
+            },
+            backgroundColor: {
+                type: 'pattern',
+                image: getWaterMark(styleManager.getItem('waterMark').value),
+                repeat: 'repeat',
+            },
+            series: {
+                type: 'sankey',
+                layoutIterations: 0,
+                nodeGap: styleManager.getItem('curveness').valueTwoDigits,
+                label: {
+                    show: true,
+                    textBorderColor: 'transparent',
+                    formatter: function({data: {name, value}}) {
+                        name = name.split("#")[0];
+                        return `{name|${name}}\n{value|${value}${' '+styleManager.getItem('unit').value}}`;
+                    },
+                    rich: {
+                        name: {
+                            fontSize: styleManager.getItem('labelFontSize').value,
+                            fontWeight: 'bold',
+                            color: 'black',
+                        },
+                        value: {
+                            fontSize: styleManager.getItem('valueFontSize').value,
+                            color: 'black',
+                            lineHeight: styleManager.getItem('valueFontSize').value * 1.5,
+                        }
+                    }
+                },
+                nodeAlign: 'left',
+                data: getReportSeries(financialReport),
+                links: getReportLinks(financialReport),
+                top: `${styleManager.getItem('graphPaddingV').value}%`,
+                bottom: `${(styleManager.getItem('graphPaddingV').value - styleManager.getItem('titlePaddingTop').value )}%`,
+                right: `${styleManager.getItem('graphPaddingH').value}%`,
+                left: `${styleManager.getItem('graphPaddingH').value}%`,
+                emphasis: {
+                    focus: 'adjacency'
+                },
+                lineStyle: {
+                    color: 'gradient',
+                    curveness: 0.5
+                },
+            },
+    
+        }
+        return option;
+    }
+
+
+
+
+
+
     return (
-        <EchartsReact option={option} style={{ height: `${styleManager.getItem('height').value}px`, width: '100%' }} />
+        <EchartsReact 
+            option={getOption()} 
+            style={{ height: `${graphWidth / styleManager.getItem('aspectRatio').value}px`, width: `${graphWidth}px`}} 
+        />
     );
 }

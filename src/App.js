@@ -1,5 +1,5 @@
 import './App.css';
-import FinancialReport from './financial_report/FinancialReport';
+import FinancialReport from './FinancialReport';
 
 function App() {
   return (

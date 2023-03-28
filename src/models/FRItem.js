@@ -1,7 +1,9 @@
+import getRandomKey from "../utils/GetRandomKey";
+
 class FRItem {
     constructor({id, name, value, type, validator} = {}){
         this.id = id;
-        this.uid = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+        this.uid = getRandomKey();
         this.name = name;
         this.value = value;
         this.valueShow = `${value}`;
@@ -20,7 +22,7 @@ class FRItem {
     setValue(newValue) {
         if(this.validator(newValue)) {
             this.value = newValue;
-            this.valueShow = newValue;
+            this.valueShow = `${newValue}`;
         } else {
             this.valueShow = newValue;
         }

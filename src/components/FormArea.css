@@ -1,0 +1,20 @@
+.colorBlock {
+    border: none;
+    cursor: pointer;
+    appearance: none;
+    background-color: transparent;
+    width: 120px;
+    height: 25px;
+    padding: 0;
+    margin: 0;
+}
+
+.colorBlock::-webkit-color-swatch {
+    border: none;
+    border-radius: 5px;
+}
+
+.colorBlock::-moz-color-swatch {
+    border: none;
+    border-radius: 5px;
+}

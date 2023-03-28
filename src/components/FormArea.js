@@ -1,4 +1,4 @@
-import React from "react";
+import './FormArea.css'
 
 function InputArea({ value, setValue, inputWidth }) {
     var inputStyle = {
@@ -10,27 +10,20 @@ function InputArea({ value, setValue, inputWidth }) {
         onChange={({ target: { value } }) => {
             setValue(value);
         }
-    } />;
+        }
+    />;
 }
 
-
-
-function TextArea({ label, value, setValue, inputWidth, textStyle }) {
-    var blockStyle = {
-        display: 'flex',
-        alignItems: 'center',
-        paddingBottom: '5px',
-
-    }
+function TextLabel({ label, textStyle }) {
 
     var defaultTextStyle = {
         fontSize: '12px',
         lineHeight: '20px',
         textAlign: 'left',
-        paddingRight: '30px',
+        width: '100px',
     }
 
-    if(textStyle !== undefined) {
+    if (textStyle !== undefined) {
         textStyle = {
             ...defaultTextStyle,
             ...textStyle
@@ -39,31 +32,54 @@ function TextArea({ label, value, setValue, inputWidth, textStyle }) {
         textStyle = defaultTextStyle;
     }
 
-
-
-    return (
-        <div style={blockStyle}>
-            <div style={textStyle}>{label}</div>
-            <InputArea value={value} setValue={setValue} inputWidth={inputWidth} />
-        </div>
-    )
+    return <div style={textStyle} >{label}</div>;
 }
 
-
-function DoubleTextArea({ name, setName, value, setValue, inputWidth }) {
+function GroupArea({ children }) {
     var blockStyle = {
         display: 'flex',
         alignItems: 'center',
         paddingBottom: '5px',
     }
-
     return (
-        <div style={blockStyle}>
-            <InputArea value={name} setValue={setName} inputWidth={inputWidth} />
-            <div style={{ width: '10px' }}></div>
-            <InputArea value={value} setValue={setValue} inputWidth={inputWidth} />
+        <div style={blockStyle} >
+            {children.map((child) => child)}
         </div>
-    )
+    );
+}
+
+function TextArea({ label, value, setValue, inputWidth, textStyle }) {
+
+    return <GroupArea children={[
+        <TextLabel label={label} textStyle={textStyle} key='textArea01' />,
+        <InputArea value={value} setValue={setValue} inputWidth={inputWidth} key='textArea02'/>
+    ]}
+        
+    />;
+
+}
+
+
+function DoubleTextArea({ name, setName, value, setValue, inputWidth }) {
+    return <GroupArea children={[
+        <InputArea value={name} setValue={setName} inputWidth={inputWidth} key='doubleTextArea01'/>,
+        <div style={{ width: '10px' }} key='doubleTextGap'></div>,
+        <InputArea value={value} setValue={setValue} inputWidth={inputWidth} key='doubleTextArea02' />,
+    ]}  />;
+}
+
+function ColorInputArea({ label, value, setValue, textStyle }) {
+
+    return <GroupArea children={[
+        <TextLabel label={label} textStyle={textStyle}  key='colorInputAreaText'/>,
+        <input
+            className='colorBlock'
+            type='color'
+            onChange={(e)=>setValue(e.target.value)} 
+            value={value}
+            key='colorInputAreaBar'
+        />
+    ]}  />
 }
 
 function SectionTitle({ name }) {
@@ -77,7 +93,7 @@ function SectionTitle({ name }) {
         fontWeight: 'bold',
     }
     return (
-        <div style={style}>
+        <div style={style} >
             {name}
         </div>
 
@@ -103,11 +119,13 @@ export default function FormArea({ reportManager, styleManager }) {
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'start',
-        alignItems: 'start',
+        alignItems: 'center',
         width: '300px',
-        paddingLeft: '20px',
-        paddingBottom: '20px',
-
+        padding: 20,
+        marginTop: 10,
+        marginLeft: 10,
+        borderRadius: 5,
+        background: '#F8F8F8',
     }
 
     return (
@@ -123,7 +141,9 @@ export default function FormArea({ reportManager, styleManager }) {
                         textStyle={{
                             fontSize: '14px',
                             fontWeight: 'bold',
+                            width: '60px',
                         }}
+                        
                     />
                 </div>
 
@@ -136,7 +156,9 @@ export default function FormArea({ reportManager, styleManager }) {
                         textStyle={{
                             fontSize: '14px',
                             fontWeight: 'bold',
+                            width: '60px',
                         }}
+                        
                     />
                 </div>
 
@@ -153,7 +175,7 @@ export default function FormArea({ reportManager, styleManager }) {
                                 setName={reportManager.getChangeNameCallback(e)}
                                 value={reportManager.getItem(e).valueShow}
                                 setValue={reportManager.getUpdateCallback(e)}
-                                key={e}
+                                key={reportManager.getItem(e).name}
                             />
                         })
                     }
@@ -170,7 +192,7 @@ export default function FormArea({ reportManager, styleManager }) {
                                 setName={reportManager.getChangeNameCallback(e)}
                                 value={reportManager.getItem(e).valueShow}
                                 setValue={reportManager.getUpdateCallback(e)}
-                                key={e}
+                                key={reportManager.getItem(e).name}
                             />
                         })
                     }
@@ -185,7 +207,7 @@ export default function FormArea({ reportManager, styleManager }) {
                                 setName={reportManager.getChangeNameCallback(e)}
                                 value={reportManager.getItem(e).valueShow}
                                 setValue={reportManager.getUpdateCallback(e)}
-                                key={e}
+                                key={reportManager.getItem(e).name}
                             />
                         })
                     }
@@ -203,7 +225,7 @@ export default function FormArea({ reportManager, styleManager }) {
                                 setName={reportManager.getChangeNameCallback(e)}
                                 value={reportManager.getItem(e).valueShow}
                                 setValue={reportManager.getUpdateCallback(e)}
-                                key={e}
+                                key={reportManager.getItem(e).name}
                             />
                         })
                     }
@@ -215,11 +237,11 @@ export default function FormArea({ reportManager, styleManager }) {
 
                     {
                         ['backgroundColor', 'incomeColor', 'profitColor', 'expenseColor'].map((e) => {
-                            return <TextArea
+                            return <ColorInputArea
                                 label={styleManager.getItem(e).name}
-                                value={styleManager.getItem(e).valueShow}
+                                value={styleManager.getItem(e).value}
                                 setValue={styleManager.getUpdateCallback(e)}
-                                key={e}
+                                key={styleManager.getItem(e).name}
                             />
                         })
                     }
@@ -231,14 +253,14 @@ export default function FormArea({ reportManager, styleManager }) {
 
                     {
                         [
-                            'height', 'graphPaddingV', 'graphPaddingH',
-                            'titlePaddingTop', 'curveness', 'exportRatio'
+                            'graphPaddingV', 'graphPaddingH', 'titlePaddingTop',
+                            'curveness', 'width', 'aspectRatio', 'exportRatio'
                         ].map((e) => {
                             return <TextArea
                                 label={styleManager.getItem(e).name}
                                 value={styleManager.getItem(e).valueShow}
                                 setValue={styleManager.getUpdateCallback(e)}
-                                key={e}
+                                key={styleManager.getItem(e).name}
                             />
                         })
                     }
@@ -249,23 +271,20 @@ export default function FormArea({ reportManager, styleManager }) {
 
                     {
                         [
-                            'titleFontSize', 'labelFontSize', 'valueFontSize', 
+                            'titleFontSize', 'labelFontSize', 'valueFontSize',
                             'waterMarkSize', 'unit', 'secretToken'
                         ].map((e) => {
                             return <TextArea
                                 label={styleManager.getItem(e).name}
                                 value={styleManager.getItem(e).valueShow}
                                 setValue={styleManager.getUpdateCallback(e)}
-                                key={e}
+                                key={styleManager.getItem(e).name}
                             />
                         })
                     }
                 </div>
 
             </div>
-
-
-
 
         </div>
     );

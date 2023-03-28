@@ -4,15 +4,27 @@ class ContentManager {
         this.setState = setState;
     }
 
+    get valueString() {
+        var valueString = '';
+        for(let idx in this.state) {
+            valueString += `${this.state[idx].value}`
+        }
+        return valueString;
+    }
+
+    updateValue(id, value) {
+        var newState = this.state.map((item) => {
+            if(item.id === id) {
+                item.setValue(value);
+            }
+            return item;
+        });
+        this.setState(newState);
+    }
+
     getUpdateCallback(id){
         return (newValue) => {
-            var newState = this.state.map((item) => {
-                if(item.id === id) {
-                    item.setValue(newValue);
-                }
-                return item;
-            });
-            this.setState(newState);
+            this.updateValue(id, newValue);
         }
     }
 
