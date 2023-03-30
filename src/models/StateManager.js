@@ -14,7 +14,7 @@ class StateManager {
     }
 
     get state() {
-        const storage = localStorage.getItem(this._storageName);
+        const storage = sessionStorage.getItem(this._storageName);
         if(storage) {
             return JSON.parse(storage)
         } else {
@@ -76,7 +76,7 @@ class StateManager {
                 data = data.splice(data.length - maxAllowed, maxAllowed);
             }
         }
-        localStorage.setItem(this._storageName, JSON.stringify({
+        sessionStorage.setItem(this._storageName, JSON.stringify({
             ...this.state,
             [type]: data,
         }));
