@@ -12,6 +12,11 @@ class ContentManager {
         return valueString;
     }
 
+    updateAll(newState) {
+        this.setState(newState);
+        this.state = newState;
+    }
+
     updateValue(id, value) {
         var newState = this.state.map((item) => {
             if(item.id === id) {

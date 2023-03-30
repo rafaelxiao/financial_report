@@ -1,0 +1,39 @@
+
+
+.main-bar {
+    position: fixed;
+    left: 0px;
+    height: 80px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(to right, #44a08d, #093637);
+    z-index: 8;
+}
+
+.main-title {
+    margin-left: 5vw;
+    font-size: 30px;
+    letter-spacing: 5px;
+    color: white;
+}
+
+.sl-button {
+    position: relative;
+    background: #F3F3F322;
+    color: #FFFFFF;
+    border: none;
+    margin-right: 5vw;
+    border-radius: 5px;
+    font-size:10px;
+    width: 40px;
+    height: 25px;
+}
+
+@media screen and (max-width: 435px) {
+    .main-title {
+        letter-spacing: 0px;
+    }
+
+}

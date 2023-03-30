@@ -73,7 +73,7 @@ function ColorInputArea({ label, value, setValue, textStyle }) {
     return <GroupArea children={[
         <TextLabel label={label} textStyle={textStyle}  key='colorInputAreaText'/>,
         <input
-            className='colorBlock'
+            className='color-block'
             type='color'
             onChange={(e)=>setValue(e.target.value)} 
             value={value}
@@ -133,32 +133,20 @@ export default function FormArea({ reportManager, styleManager }) {
             {/* <div style={{ ...areaBlockStyle, flexDirection: 'row' }}> */}
             <div style={areaStyleHorizontal}>
                 <div style={areaBlockStyle}>
-                    <TextArea
-                        label={styleManager.getItem('title').name}
-                        value={styleManager.getItem('title').value}
-                        setValue={styleManager.getUpdateCallback('title')}
-                        inputWidth={190}
-                        textStyle={{
-                            fontSize: '14px',
-                            fontWeight: 'bold',
-                            width: '60px',
-                        }}
-                        
+                    <SectionTitle name={reportManager.getItem('title').name} />
+                    <InputArea                    
+                        value={reportManager.getItem('title').value}
+                        setValue={reportManager.getUpdateCallback('title')}
+                        inputWidth={260}
                     />
                 </div>
 
                 <div style={areaBlockStyle}>
-                    <TextArea
-                        label={styleManager.getItem('waterMark').name}
+                    <SectionTitle name={styleManager.getItem('waterMark').name} />
+                    <InputArea                    
                         value={styleManager.getItem('waterMark').value}
                         setValue={styleManager.getUpdateCallback('waterMark')}
-                        inputWidth={190}
-                        textStyle={{
-                            fontSize: '14px',
-                            fontWeight: 'bold',
-                            width: '60px',
-                        }}
-                        
+                        inputWidth={260}
                     />
                 </div>
 
@@ -175,7 +163,7 @@ export default function FormArea({ reportManager, styleManager }) {
                                 setName={reportManager.getChangeNameCallback(e)}
                                 value={reportManager.getItem(e).valueShow}
                                 setValue={reportManager.getUpdateCallback(e)}
-                                key={reportManager.getItem(e).name}
+                                key={reportManager.getItem(e).uid}
                             />
                         })
                     }
@@ -192,7 +180,7 @@ export default function FormArea({ reportManager, styleManager }) {
                                 setName={reportManager.getChangeNameCallback(e)}
                                 value={reportManager.getItem(e).valueShow}
                                 setValue={reportManager.getUpdateCallback(e)}
-                                key={reportManager.getItem(e).name}
+                                key={reportManager.getItem(e).uid}
                             />
                         })
                     }
@@ -207,7 +195,7 @@ export default function FormArea({ reportManager, styleManager }) {
                                 setName={reportManager.getChangeNameCallback(e)}
                                 value={reportManager.getItem(e).valueShow}
                                 setValue={reportManager.getUpdateCallback(e)}
-                                key={reportManager.getItem(e).name}
+                                key={reportManager.getItem(e).uid}
                             />
                         })
                     }
@@ -225,7 +213,7 @@ export default function FormArea({ reportManager, styleManager }) {
                                 setName={reportManager.getChangeNameCallback(e)}
                                 value={reportManager.getItem(e).valueShow}
                                 setValue={reportManager.getUpdateCallback(e)}
-                                key={reportManager.getItem(e).name}
+                                key={reportManager.getItem(e).uid}
                             />
                         })
                     }
@@ -241,7 +229,7 @@ export default function FormArea({ reportManager, styleManager }) {
                                 label={styleManager.getItem(e).name}
                                 value={styleManager.getItem(e).value}
                                 setValue={styleManager.getUpdateCallback(e)}
-                                key={styleManager.getItem(e).name}
+                                key={styleManager.getItem(e).uid}
                             />
                         })
                     }
@@ -260,7 +248,7 @@ export default function FormArea({ reportManager, styleManager }) {
                                 label={styleManager.getItem(e).name}
                                 value={styleManager.getItem(e).valueShow}
                                 setValue={styleManager.getUpdateCallback(e)}
-                                key={styleManager.getItem(e).name}
+                                key={styleManager.getItem(e).uid}
                             />
                         })
                     }
@@ -272,13 +260,13 @@ export default function FormArea({ reportManager, styleManager }) {
                     {
                         [
                             'titleFontSize', 'labelFontSize', 'valueFontSize',
-                            'waterMarkSize', 'unit', 'secretToken'
+                            'waterMarkSize', 'unit', 'styleTitle', 'secretToken'
                         ].map((e) => {
                             return <TextArea
                                 label={styleManager.getItem(e).name}
                                 value={styleManager.getItem(e).valueShow}
                                 setValue={styleManager.getUpdateCallback(e)}
-                                key={styleManager.getItem(e).name}
+                                key={styleManager.getItem(e).uid}
                             />
                         })
                     }

@@ -245,7 +245,7 @@ export default function ChartArea({reportManager, styleManager, graphWidth}) {
         var option = {
             title: [
                 {
-                    text: styleManager.getItem('title').value,
+                    text: reportManager.getItem('title').value,
                     textStyle: {
                         fontSize: styleManager.getItem('titleFontSize').value,
                     },
